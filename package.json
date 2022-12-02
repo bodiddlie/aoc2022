@@ -1,0 +1,19 @@
+{
+  "name": "aoc2022",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "",
+  "main": "dist/app.js",
+  "scripts": {
+    "day1": "tsc && node dist/day1.js",
+    "day2": "tsc && node dist/day2/day2.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^18.11.10",
+    "typescript": "^4.9.3"
+  }
+}
