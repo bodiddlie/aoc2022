@@ -7,6 +7,7 @@
   "scripts": {
     "day1": "tsc && node dist/day1.js",
     "day2": "tsc && node dist/day2/day2.js",
+    "day3": "tsc && node dist/day3/day3.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -14,6 +15,9 @@
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^18.11.10",
+    "@typescript-eslint/eslint-plugin": "^5.45.0",
+    "@typescript-eslint/parser": "^5.45.0",
+    "eslint": "^8.29.0",
     "typescript": "^4.9.3"
   }
 }
