@@ -12,7 +12,7 @@ try {
   const contents = await readFile('day1-input.txt', 'utf8');
   const lines = contents.split('\n');
   let total = 0;
-  let totals = [];
+  const totals = [];
   for (const line of lines) {
     if (line === '') {
       totals.push(total)
