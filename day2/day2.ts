@@ -30,21 +30,24 @@ const scoreMap = {
   }
 }
 
-try {
-  const contents = await readFile('day2/day2-input.txt', 'utf8');
-  const turns = contents.split('\n');
+async function partOne(): Promise<number> {
+  try {
+    const contents = await readFile('day2/day2-input.txt', 'utf8');
+    const turns = contents.split('\n');
 
-  let score = 0;
+    let score = 0;
 
-  for (const turn of turns) {
+    for (const turn of turns) {
 
-    score += getScoreForTurn(turn);
+      score += getScoreForTurn(turn);
+    }
+
+
+    return score;
+  } catch (error) {
+    console.error(error);
+    return 0;
   }
-
-  console.log(score);
-
-} catch (error) {
-  console.error(error);
 }
 
 function getScoreForTurn(turn) {
@@ -52,3 +55,5 @@ function getScoreForTurn(turn) {
 
   return scoreMap[choices[0]][choices[1]];
 }
+
+partOne().then(console.log)
