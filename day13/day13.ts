@@ -1,7 +1,5 @@
 import { getInput } from "../util";
 
-const s = ["[[1],[2,3,4]]", "[[1],2,3,4]"];
-
 const sampleInput = [
   "[1,1,3,1,1]",
   "[1,1,5,1,1]",
@@ -45,56 +43,64 @@ function partOne(input) {
 
   let sum = 0;
   for (const [idx, p] of pairs.entries()) {
-    const result = comparePair(p[0], p[1]);
+    const result = comparePair(JSON.parse(p[0]), JSON.parse(p[1]));
     console.log(p, result);
-    sum += result ? idx + 1 : 0;
+    sum += result !== -1 ? idx + 1 : 0;
   }
 
   console.log(sum);
 }
 
-function comparePair(a: string, b: string): boolean {
-  const left = JSON.parse(a);
-  const right = JSON.parse(b);
+function partTwo(input) {
+  const stripped = input.filter((l) => l !== "");
+  const two = "[[2]]";
+  const six = "[[6]]";
+  stripped.push(two);
+  stripped.push(six);
 
-  console.log(left, right);
-  let correctOrder = true;
-  // loop over left and right
-  for (let i = 0; i < left.length; i++) {
-    const leftItem = left[i];
-    const rightItem = right[i];
-
-    if (leftItem && !rightItem) {
-      correctOrder = false;
-      break;
-    } else if (typeof leftItem === "number" && typeof rightItem === "number") {
-      if (leftItem > rightItem) {
-        correctOrder = false;
-        break;
-      } else if (leftItem < rightItem) {
-        break;
-      }
-    } else if (Array.isArray(leftItem) && Array.isArray(rightItem)) {
-      if (!comparePair(JSON.stringify(leftItem), JSON.stringify(rightItem))) {
-        correctOrder = false;
-        break;
-      }
-    } else if (typeof leftItem === "number" && Array.isArray(rightItem)) {
-      if (!comparePair(JSON.stringify([leftItem]), JSON.stringify(rightItem))) {
-        correctOrder = false;
-        break;
-      }
-    } else if (Array.isArray(leftItem) && typeof rightItem === "number") {
-      if (!comparePair(JSON.stringify(leftItem), JSON.stringify([rightItem]))) {
-        correctOrder = false;
-        break;
+  for (let i = 0; i < stripped.length - 1; i++) {
+    for (let j = 0; j < stripped.length - i - 1; j++) {
+      const left = JSON.parse(stripped[j]);
+      const right = JSON.parse(stripped[j + 1]);
+      if (comparePair(left, right) === -1) {
+        const temp = stripped[j];
+        stripped[j] = stripped[j + 1];
+        stripped[j + 1] = temp;
       }
     }
   }
 
-  return correctOrder;
+  const twoIdx = stripped.indexOf(two) + 1;
+  const sixIdx = stripped.indexOf(six) + 1;
+  console.log(twoIdx * sixIdx);
 }
 
-partOne(s);
+function comparePair(left, right): number {
+  if (!left && left !== 0) return 1;
+  if (!right && right !== 0) return -1;
+
+  if (Array.isArray(left) || Array.isArray(right)) {
+    const leftArray = Array.isArray(left) ? left : [left];
+    const rightArray = Array.isArray(right) ? right : [right];
+    return compareArrays(leftArray, rightArray);
+  }
+
+  if (left === right) return 0;
+  return left < right ? 1 : -1;
+}
+
+function compareArrays(left, right): number {
+  const longest = Math.max(left.length, right.length);
+
+  for (let i = 0; i < longest; i++) {
+    const result = comparePair(left[i], right[i]);
+    if (result !== 0) return result;
+  }
+
+  return 0;
+}
+
 // partOne(sampleInput);
 // getInput(13).then(partOne);
+// partTwo(sampleInput);
+getInput(13).then(partTwo);
