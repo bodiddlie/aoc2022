@@ -1,3 +1,5 @@
+import { getInput } from "../util";
+
 const sampleInput = [
   "Valve AA has flow rate=0; tunnels lead to valves DD, II, BB",
   "Valve BB has flow rate=13; tunnels lead to valves CC, AA",
@@ -111,4 +113,56 @@ function getRates(distances, valve, minutes, remaining, opened = {}): Rate[] {
   return rates;
 }
 
-partOne(sampleInput);
+function partTwo(input: string[]) {
+  const valves = {};
+  for (const line of input) {
+    const valve = parseLine(line);
+    valves[valve.name] = valve;
+  }
+
+  const distances = {};
+
+  for (const start of Object.keys(valves)) {
+    for (const end of Object.keys(valves)) {
+      if (!distances[start]) {
+        distances[start] = {};
+      }
+      distances[start][end] = breadthFirst(valves, start, end).length - 1;
+    }
+  }
+
+  const nonZero = Object.keys(valves).filter((v) => valves[v].flowRate > 0);
+  const rates = getRates(distances, "AA", 26, nonZero);
+
+  const maxScores = {};
+  for (const rate of rates) {
+    const key = Object.keys(rate).sort().join(",");
+    const score = Object.entries(rate).reduce((acc, [key, value]) => {
+      return acc + valves[key].flowRate * value;
+    }, 0);
+
+    if (maxScores[key] == null) maxScores[key] = -Infinity;
+    maxScores[key] = Math.max(score, maxScores[key]);
+  }
+
+  let highest = -Infinity;
+  Object.keys(maxScores).forEach((player) => {
+    Object.keys(maxScores).forEach((elephant) => {
+      const allValves = new Set();
+      const playerList = player.split(",");
+      playerList.forEach((valve) => allValves.add(valve));
+      const elephantList = elephant.split(",");
+      elephantList.forEach((valve) => allValves.add(valve));
+
+      if (allValves.size == playerList.length + elephantList.length)
+        highest = Math.max(maxScores[player] + maxScores[elephant], highest);
+    });
+  });
+
+  console.log(highest);
+}
+
+// partOne(sampleInput);
+// getInput(16).then(partOne);
+// partTwo(sampleInput);
+getInput(16).then(partTwo);
