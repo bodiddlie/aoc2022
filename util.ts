@@ -8,3 +8,12 @@ export async function getInput(day): Promise<string[]> {
   const contents = await readFile(`day${day}/day${day}-input.txt`, "utf8");
   return contents.split("\n");
 }
+
+export function range(start: number, end: number = null): number[] {
+  if (!end) {
+    end = start;
+    start = 0;
+  }
+
+  return Array.from({ length: end - start }, (_, i) => start + i);
+}
