@@ -17,3 +17,7 @@ export function range(start: number, end: number = null): number[] {
 
   return Array.from({ length: end - start }, (_, i) => start + i);
 }
+
+export function modulo(x, m) {
+  return x < 0 ? (x % m) + m : x % m;
+}

@@ -26,6 +26,8 @@
     "day19": "tsc && node dist/day19/day19.js",
     "day20": "tsc && node dist/day20/day20.js",
     "day21": "tsc && node dist/day21/day21.js",
+    "day22": "tsc && node dist/day22/day22.js",
+    "day23": "tsc && node dist/day23/day23.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -38,5 +40,8 @@
     "eslint": "^8.29.0",
     "prettier": "^2.8.0",
     "typescript": "^4.9.3"
+  },
+  "dependencies": {
+    "lodash": "^4.17.21"
   }
 }
